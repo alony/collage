@@ -3,7 +3,7 @@ module Collage
 
     private
     def collection_complete?
-      @images.count >= 10 #magick number
+      @images.count >= 10 #magic number
     end
   end
 end
