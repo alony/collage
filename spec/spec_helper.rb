@@ -1,5 +1,6 @@
-require 'collage'
+Dir.glob('lib/**/*.rb') {|file| require File.basename(file)}
 
 RSpec.configure do |config|
-  # maybe some config here, we'll see
+  config.color = true
+  config.formatter = :documentation
 end

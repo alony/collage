@@ -1,2 +1,4 @@
-class Collage::Dictionary
+module Collage
+  class Dictionary
+  end
 end

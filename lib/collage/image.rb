@@ -1,2 +1,4 @@
-class Collage::Image
+module Collage
+  class Image
+  end
 end

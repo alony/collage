@@ -1,11 +1,10 @@
 # coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
+lib = File.expand_path('../lib/collage', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'collage'
 
 Gem::Specification.new do |spec|
   spec.name          = "collage"
-  spec.version       = Collage::VERSION
+  spec.version       = "0.0.1"
   spec.authors       = ["Alona Mekhovova"]
   spec.email         = ["alona.tarasova@gmail.com"]
   spec.summary       = "A collage maker based on flickr search results"
@@ -30,7 +29,7 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
-  spec.require_paths = ["config", "lib"]
+  spec.require_paths = ["config", "lib/collage"]
 
   spec.add_runtime_dependency "flickraw"
   spec.add_runtime_dependency "mini_magick"
