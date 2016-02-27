@@ -28,5 +28,15 @@ describe Collage::Flickr do
         expect(Collage::Flickr.fetch("weihnachten")).to be_nil
       end
     end
+
+    context "fetch is impossible" do
+      before do
+        allow(flickr.photos).to receive("search").and_raise(StandardError)
+      end
+
+      it "should raise an error" do
+        expect{Collage::Flickr.fetch("weihnachten")}.to raise_error(RuntimeError, "problem connecting to flickr API")
+      end
+    end
   end
 end

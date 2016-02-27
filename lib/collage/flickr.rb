@@ -8,6 +8,8 @@ module Collage
       return if photo.nil?
 
       FlickRaw.url_q OpenStruct.new(photo.to_hash)
+    rescue => e
+      raise "problem connecting to flickr API"
     end
   end
 end
