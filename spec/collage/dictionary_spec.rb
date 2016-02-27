@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Collage::Dictionary do
+describe WordsToImage::Dictionary do
   SAMPLE_PATH = 'spec/fixtures/sample_dict'
 
   describe "#get_word" do
-    let(:dictionary) { Collage::Dictionary.new(SAMPLE_PATH) }
+    let(:dictionary) { WordsToImage::Dictionary.new(SAMPLE_PATH) }
 
     it "should return one word from the set" do
       words = File.read(SAMPLE_PATH).split
@@ -15,7 +15,7 @@ describe Collage::Dictionary do
     end
 
     it "should return words in random order" do
-      dict2 = Collage::Dictionary.new(SAMPLE_PATH)
+      dict2 = WordsToImage::Dictionary.new(SAMPLE_PATH)
 
       words = (1..5).map { dictionary.get_word }
       words2 = (1..5).map { dict2.get_word }
@@ -34,7 +34,7 @@ describe Collage::Dictionary do
     end
 
     context "file unreadable" do
-      let(:inexisting_dict) { Collage::Dictionary.new('/inexisting/path') }
+      let(:inexisting_dict) { WordsToImage::Dictionary.new('/inexisting/path') }
 
       it "should raise an exception with verbose description" do
         expect{inexisting_dict.get_word}.to raise_error(IOError)

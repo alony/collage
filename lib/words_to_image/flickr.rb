@@ -1,7 +1,7 @@
 require "flickraw"
 require "flickr_init"
 
-module Collage
+module WordsToImage
   class Flickr
     def self.fetch(keyword)
       photo = flickr.photos.search(text: keyword, media: :photos, per_page: 1, sort: "interestingness-desc").first

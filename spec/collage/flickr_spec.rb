@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Collage::Flickr do
+describe WordsToImage::Flickr do
   describe ".fetch" do
     before do
       allow(FlickRaw::Flickr).to receive(:new).and_return(OpenStruct.new(photos: {}))
@@ -15,7 +15,7 @@ describe Collage::Flickr do
       end
 
       it "should fetch an image using flickr API" do
-        expect(Collage::Flickr.fetch("weihnachten")).to eq "http://image_url"
+        expect(WordsToImage::Flickr.fetch("weihnachten")).to eq "http://image_url"
       end
     end
 
@@ -25,7 +25,7 @@ describe Collage::Flickr do
       end
 
       it "should return nil if nothing fetched" do
-        expect(Collage::Flickr.fetch("weihnachten")).to be_nil
+        expect(WordsToImage::Flickr.fetch("weihnachten")).to be_nil
       end
     end
 
@@ -35,7 +35,7 @@ describe Collage::Flickr do
       end
 
       it "should raise an error" do
-        expect{Collage::Flickr.fetch("weihnachten")}.to raise_error(RuntimeError, "problem connecting to flickr API")
+        expect{WordsToImage::Flickr.fetch("weihnachten")}.to raise_error(RuntimeError, "problem connecting to flickr API")
       end
     end
   end

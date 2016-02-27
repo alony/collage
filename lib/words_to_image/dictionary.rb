@@ -1,4 +1,4 @@
-module Collage
+module WordsToImage
   class Dictionary
     def initialize(path)
       @path = path

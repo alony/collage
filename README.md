@@ -1,4 +1,4 @@
-# Collage
+# Wokds To Image
 
 TODO: Write a gem description
 
@@ -6,7 +6,7 @@ TODO: Write a gem description
 ---------------> don't forget an instruction for ImageMagick
 Add this line to your application's Gemfile:
 
-    gem 'collage'
+    gem 'words_to_image'
 
 And then execute:
 
@@ -14,7 +14,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install collage
+    $ gem install words_to_image
 
 ## Usage
 
