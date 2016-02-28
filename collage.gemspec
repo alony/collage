@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = "words_to_image"
-  spec.version       = "0.0.1"
+  spec.version       = "0.0.2"
   spec.authors       = ["Alona Mekhovova"]
   spec.email         = ["alona.tarasova@gmail.com"]
   spec.summary       = "A collage maker based on flickr search results"

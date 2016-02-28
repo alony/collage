@@ -9,7 +9,7 @@ module WordsToImage
 
       FlickRaw.url_q OpenStruct.new(photo.to_hash)
     rescue => e
-      raise "problem connecting to flickr API"
+      raise "problem connecting to flickr API: #{e.message}"
     end
   end
 end

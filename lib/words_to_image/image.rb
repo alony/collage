@@ -5,7 +5,6 @@ module WordsToImage
     def initialize(path)
       @path = path
       @square_size = 150 #px
-      @images_connected = 0
     end
 
     def squarize!
@@ -47,17 +46,10 @@ module WordsToImage
       @filename ||= "img_#{Time.now.to_f}#{@path[/\.\w+$/]}"
     end
 
-    def +( image )
-      img = MiniMagick::Image.new(@path)
-      second_image = MiniMagick::Image.new(image.filename)
-
-      img.composite(second_image) do |i|
-        i.compose "Over"
-        i.geometry "+#{@images_connected * @square_size}+0"
-      end
-
-      @images_connected += 1
+    def delete!
+      File.delete(filename)
+    rescue
+      puts "! could not delete temporary file: #{filename}"
     end
-
   end
 end

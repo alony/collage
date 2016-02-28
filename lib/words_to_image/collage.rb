@@ -2,37 +2,52 @@ require 'defaults'
 
 module WordsToImage
   class Collage
-    def initialize(local_settings={})
-      @images_count    = local_settings[:images_count] || DEFAULT_SETTINGS[:images_count]
-      @dictionary_path = local_settings[:dictionary_path] || DEFAULT_SETTINGS[:dictionary_path]
-      @result_path     = local_settings[:result_path] || DEFAULT_SETTINGS[:result_path]
-      @images          = Array.new
-      @words           = Array.new
-      @dictionary      = Dictionary.new(@dictionary_path)
-      @result          = Image.new(@result_path)
+    def initialize(path, max_row_width, images_count)
+      @path             = valid_path(path)
+      @img_per_row      = [(max_row_width / 150).to_i, images_count].min
+      @rows_count       = (images_count / @img_per_row.to_f).ceil
+
+      @images_connected = 0
+      get_collage_file
     end
 
-    def get_images(keywords=[])
-      while !collection_complete?
-        keyword = keywords.shift || @dictionary.get_word
-        raise ArgumentError, "not enough words to complete a collage" unless keyword
+    def +( image )
+      img = MiniMagick::Image.new(@path)
+      second_image = MiniMagick::Image.new(image.filename)
 
-        next unless image = Flickr.fetch( keyword )
-        @images << image
-        @words << keyword
+      img = img.composite(second_image) do |i|
+        i.compose "Over"
+        i.geometry "+#{horizontal_offset}+#{vertical_offset}"
       end
-    end
+      img.write(@path)
 
-    def create
-      @images.map do |path|
-        Image.new(path).download.squarize!
-      end
-
+      @images_connected += 1
+      self
     end
 
     private
-    def collection_complete?
-      @images.count == @images_count
+    def get_collage_file
+      `convert -size #{@img_per_row * 150}x#{@rows_count * 150} canvas:white #{@path}`
+    end
+
+    def horizontal_offset
+      (@images_connected % @img_per_row) * 150
+    end
+
+    def vertical_offset
+      (@images_connected / @img_per_row) * 150
+    end
+
+    def valid_path(path)
+      dir, base = File.split(path)
+
+      base += ".jpg" unless base[/\.\w+$/]
+
+      raise "Directory unwritable" unless File.writable?(dir)
+
+      "#{dir}/#{base}"
+    rescue => e
+      raise ArgumentError, "invalid result file path: #{e.message}"
     end
   end
 end

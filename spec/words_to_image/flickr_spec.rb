@@ -2,10 +2,6 @@ require 'spec_helper'
 
 describe WordsToImage::Flickr do
   describe ".fetch" do
-    before do
-      allow(FlickRaw::Flickr).to receive(:new).and_return(OpenStruct.new(photos: {}))
-    end
-
     context "image found" do
       before do
         photo_info = {id: 123, server: 456, title: "Pure beauty"}
@@ -31,11 +27,11 @@ describe WordsToImage::Flickr do
 
     context "fetch is impossible" do
       before do
-        allow(flickr.photos).to receive("search").and_raise(StandardError)
+        allow(flickr.photos).to receive("search").and_raise(StandardError, "no internet")
       end
 
       it "should raise an error" do
-        expect{WordsToImage::Flickr.fetch("weihnachten")}.to raise_error(RuntimeError, "problem connecting to flickr API")
+        expect{WordsToImage::Flickr.fetch("weihnachten")}.to raise_error(RuntimeError, "problem connecting to flickr API: no internet")
       end
     end
   end
