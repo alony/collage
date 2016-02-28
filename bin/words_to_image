@@ -1,0 +1,61 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'cri'
+Dir.glob('lib/**/*.rb') {|file| require File.basename(file)}
+
+command = Cri::Command.define do
+  name        'words_to_image'
+  usage       'words_to_image [options]'
+  summary     'A collage maker based on flickr search results'
+  description %q{
+    A command line application that:
+
+    accepts a list of search keywords as arguments,
+    queries the Flickr API for the top-rated image for each keyword,
+    downloads the results,
+    crops them rectangularly,
+    assembles a collage grid from ten images and writes the result to a user-supplied filename.
+
+    If given less than ten keywords, or if any keyword fails to
+    result in a match, retrieve random words from a dictionary
+    source such as `/usr/share/dict/words`. Repeat as necessary
+    until you have gathered ten images.
+  }
+
+  flag   :h,  :help,  'show help for this command' do |value, cmd|
+    puts cmd.help
+    exit 0
+  end
+  option :c,  :count, 'images amount (default 10)', argument: :optional
+  option :d,  :dictionary, 'dictionary file path', argument: :optional
+  option :r,  :result, 'resulting collage path', argument: :optional
+  option :kw, :keywords, 'keywords to search for', argument: :optional
+  option :w,  :max_width, 'max resulting file width, in px (default 750)', argument: :optional
+
+  run do |opts, args, cmd|
+    local_options = {
+      images_count: opts.fetch(:count, nil),
+      max_row_width: opts.fetch(:dictionary, nil),
+      dictionary_path: opts.fetch(:result, nil),
+      result_path: opts.fetch(:max_collage_width, nil)
+    }
+    keywords = opts.fetch(:keywords, "").split
+
+    begin
+      processor = WordsToImage::Processor.new(local_options)
+
+      puts "Fetching the top-rated images"
+      processor.get_images [*keywords]
+
+      puts "Downloading the images for keywords: #{processor.words.join(", ")} and creating a collage"
+      processor.create_collage
+
+      puts "Collage successfully created at #{processor.result_path}"
+    rescue => e
+      puts "Error while execution: #{e.message}"
+    end
+  end
+end
+
+command.run(ARGV)

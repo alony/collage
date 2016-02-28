@@ -2,11 +2,13 @@ require 'defaults'
 
 module WordsToImage
   class Processor
+    attr_reader :words, :result_path
+
     def initialize(local_settings={})
-      @images_count    = local_settings[:images_count] || DEFAULT_SETTINGS[:images_count]
+      @images_count    = (local_settings[:images_count] || DEFAULT_SETTINGS[:images_count]).to_i
       @dictionary_path = local_settings[:dictionary_path] || DEFAULT_SETTINGS[:dictionary_path]
       @result_path     = local_settings[:result_path] || DEFAULT_SETTINGS[:result_path]
-      @max_row_width   = [local_settings[:max_row_width] || DEFAULT_SETTINGS[:max_row_width], 150].max
+      @max_row_width   = [(local_settings[:max_row_width] || DEFAULT_SETTINGS[:max_row_width]).to_i, 150].max
 
       @images, @words  = [], []
       @dictionary      = Dictionary.new(@dictionary_path)

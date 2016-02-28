@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = "words_to_image"
-  spec.version       = "0.0.2"
+  spec.version       = "0.0.3"
   spec.authors       = ["Alona Mekhovova"]
   spec.email         = ["alona.tarasova@gmail.com"]
   spec.summary       = "A collage maker based on flickr search results"
@@ -27,12 +27,13 @@ Gem::Specification.new do |spec|
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
-  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
-  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
+  spec.executables   = ["words_to_image"]
+  spec.test_files    = spec.files.grep(%r{^(spec)/})
   spec.require_paths = ["config", "lib/words_to_image"]
 
   spec.add_runtime_dependency "flickraw"
   spec.add_runtime_dependency "mini_magick"
+  spec.add_runtime_dependency "cri"
 
   spec.add_development_dependency "bundler", "~> 1.11"
   spec.add_development_dependency "rake"
